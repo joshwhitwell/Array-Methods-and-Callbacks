@@ -31,16 +31,14 @@ let worldCupWinner = function (array) {
             winner = element["Home Team Name"];
         } else if (element["Away Team Goals"] > element["Home Team Goals"]) {
             winner = element["Away Team Name"]
-        } else {
+        } else if (element["Home Team Goals"] === element["Away Team Goals"]){
             winner = "Tie";
         }
     });
     return winner
 } 
 
-
 console.log(worldCupWinner(worldCupFinal2014));
-
 
 /* Task 2: Create a function called  getFinals that takes `data` as an argument and returns an array of objects with only finals data */
 
@@ -55,27 +53,49 @@ console.log(getFinals(fifaData));
 /* Task 3: Implement a higher-order function called `getYears` that accepts the callback function `getFinals`, and returns an array called `years` containing all of the years in the dataset */
 
 function getYears(callback) {
-    let years = [];
-    callback.forEach(element => years.push(element["Year"]));
-    return years;
+
+    return callback.map(element => element["Year"]);
+
 }
 
 console.log(getYears(getFinals(fifaData)));
 
 /* Task 4: Implement a higher-order function called `getWinners`, that accepts the callback function `getFinals()` and determine the winner (home or away) of each `finals` game. Return the name of all winning countries in an array called `winners` */ 
 
+///USING forEach
+// function getWinners(callback) {
+//     let winners = [];
+//     callback.forEach(function(element){
+//         if (element["Home Team Goals"] > element["Away Team Goals"]) {
+//             winners.push(element["Home Team Name"]);
+//         } else if (element["Away Team Goals"] > element["Home Team Goals"]) {
+//             winners.push(element["Away Team Name"]);
+//         } else if (element["Home Team Goals"] === element["Away Team Goals"]) {
+//             if (element["Win conditions"].includes(element["Home Team Name"])) {
+//                 winners.push(element["Home Team Name"])
+//             } else if (element["Win conditions"].includes(element["Away Team Name"])) {
+//                 winners.push(element["Away Team Name"])
+//             }
+//         }
+//     });
+//     return winners
+// };
+
+//USING .map
 function getWinners(callback) {
-    let winners = [];
-    callback.forEach(function(element){
+    return callback.map(function(element){
         if (element["Home Team Goals"] > element["Away Team Goals"]) {
-            winners.push(element["Home Team Name"]);
+            return element["Home Team Name"];
         } else if (element["Away Team Goals"] > element["Home Team Goals"]) {
-            winners.push(element["Away Team Name"]);
-        } else {
-            winners.push("Tie");
+            return element["Away Team Name"];
+        } else if (element["Home Team Goals"] === element["Away Team Goals"]) {
+            if (element["Win conditions"].includes(element["Home Team Name"])) {
+                return element["Home Team Name"];
+            } else if (element["Win conditions"].includes(element["Away Team Name"])) {
+                return element["Away Team Name"];
+            }
         }
     });
-    return winners
 };
 
 console.log(getWinners(getFinals(fifaData)));
@@ -116,9 +136,6 @@ Away Average: ${awayAverage}`;
 };
 
 console.log(getAverageGoals(fifaData));
-
-// console.log(getAverageGoals(fifaData));
-
 
 /// STRETCH 🥅 //
 
