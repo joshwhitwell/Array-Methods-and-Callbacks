@@ -110,32 +110,29 @@ Parameters:
 function getWinnersByYear(callback1, callback2, callback3, data) {
     let years = callback1(callback3(data));
     let winners = callback2(callback3(data));
-    let num = years.length;
-    let winnersByYear = [];
-    for (let i = 0; i < num; i++) {
-        if (winners[i] === "Tie") {
-            winnersByYear.push(`In ${years[i]}, the world cup was a tie!`);
-        } else {
-            winnersByYear.push(`In ${years[i]}, ${winners[i]} won the world cup!`);
-        }
-    }
+    let winnersByYear = winners.map((element, index) => `In ${years[index]}, ${element} won the world cup!`);
     return winnersByYear;
 };
 
 console.log(getWinnersByYear(getYears, getWinners, getFinals, fifaData));
 
-console.log()
-
 /* Task 6: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
 function getAverageGoals(data) {
-    let homeAverage = data.reduce(function(accumulator, element){return accumulator + element["Home Team Goals"] / data.length}, 0);
-    let awayAverage = data.reduce(function(accumulator, element){return accumulator + element["Away Team Goals"] / data.length}, 0);
-    return `Home Average: ${homeAverage}
-Away Average: ${awayAverage}`;
+    let averageGoals = data.reduce(function(accumulator, element) {
+        accumulator["Home"] = accumulator["Home"] + element["Home Team Goals"];
+        accumulator["Away"] = accumulator["Away"] + element["Away Team Goals"];
+        return accumulator;
+    }, {Home: 0, Away: 0});
+    averageGoals.Home /= data.length;
+    averageGoals.Away /= data.length;
+    return averageGoals; 
 };
 
 console.log(getAverageGoals(fifaData));
+
+// (accumulator["Home"] + element["Home Team Goals"]) / data.length;
+//     (accumulator["Away"] + element["Away Team Goals"]) / data.length;
 
 /// STRETCH 🥅 //
 
@@ -144,34 +141,36 @@ console.log(getAverageGoals(fifaData));
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
+// function getCountryWins(callback, data, initials) {
+//     let finalsData = callback(data);
+//     let counter = 0;
+//     finalsData.forEach(function(element){
+//         if ()
+//     });
+// };
 
-    /* code here */
-
-};
-
-getCountryWins();
+// getCountryWins();
 
 
 /* Stretch 3: Write a function called getGoals() that accepts a parameter `data` and returns the team with the most goals score per appearance (average goals for) in the World Cup finals */
 
-function getGoals(/* code here */) {
+// function getGoals(/* code here */) {
 
-    /* code here */
+//     /* code here */
 
-};
+// };
 
-getGoals();
+// getGoals();
 
 
 /* Stretch 4: Write a function called badDefense() that accepts a parameter `data` and calculates the team with the most goals scored against them per appearance (average goals against) in the World Cup finals */
 
-function badDefense(/* code here */) {
+// function badDefense(/* code here */) {
 
-    /* code here */
+//     /* code here */
 
-};
+// };
 
-badDefense();
+// badDefense();
 
 /* If you still have time, use the space below to work on any stretch goals of your chosing as listed in the README file. */
